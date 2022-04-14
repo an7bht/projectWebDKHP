@@ -1,0 +1,75 @@
+// Ví dụ về tài liệu * .xlsx: 
+// --------------------------------------- -------------------------------------------------- 
+// | NGÀY KHỞI NGHIỆP | SỐ SINH VIÊN | MIỄN PHÍ | TIÊU ĐỀ KHÓA HỌC | LIÊN HỆ | TRẠNG THÁI | 
+// ------------------------------------------------ ----------------------------------------- 
+// | 24/03/2018 | 10 | sự thật | Hóa học | (123) 456-7890 | CÓ LỊCH TRÌNH | 
+// ------------------------------------------------ -----------------------------------------
+
+const  schema  =  { 
+  'START DATE' : { 
+    // Tên thuộc tính đối tượng JSON. 
+    prop : 'date' , 
+    type : Date 
+  } , 
+  'SỐ HỌC SINH' : { 
+    prop : 'numberOfStudents' , 
+    type : Number , 
+    Required : true 
+  } , 
+  // Ví dụ đối tượng lồng nhau. 
+  // 'COURSE' ở đây không phải là tên cột tệp Excel thực, 
+  // nó có thể là bất kỳ chuỗi nào - nó chỉ để đọc mã. 
+  'KHÓA HỌC' : {
+    // Đường dẫn đối tượng lồng nhau: `row.course` 
+    prop : 'course' , 
+    // Lược đồ đối tượng lồng nhau: 
+    type : { 
+      'LÀ MIỄN PHÍ' : { 
+        prop : 'isFree' , 
+        type : Boolean 
+      } , 
+      'TIÊU ĐỀ KHÓA HỌC' : { 
+        prop : 'title' , 
+        type : String 
+      } 
+    } 
+  } , 
+  'CONTACT' : { 
+    prop : 'contact' , 
+    Required : true , 
+    // Có thể xác định một `type` tùy chỉnh.
+    // Hàm `type` chỉ được gọi cho các ô không trống. 
+    type : ( value )  =>  { 
+      const  number  =  parsePhoneNumber ( value ) 
+      if  ( ! number )  { 
+        throw  new  Error ( 'invalid' ) 
+      } 
+      return  number 
+    } 
+  } , 
+  'TRẠNG THÁI' : { 
+    prop : 'status' , 
+    type : String , 
+    oneOf : [ 
+      'SCHEDULED' ,
+      'BẮT ĐẦU' , 
+      'KẾT THÚC' 
+    ] 
+  } 
+}
+
+readXlsxFile ( tệp ,  { schema } ) . sau đó ( ( { hàng , lỗi } )  =>  { 
+  // `lỗi` các mục danh sách có hình dạng:` {hàng, cột, lỗi, giá trị} `. 
+  lỗi . chiều dài  ===  0
+
+  row  ===  [ { 
+    date : new  Date ( 2018 ,  2 ,  24 ) , 
+    numberOfStudents : 10 , 
+    course : { 
+      isFree : true , 
+      title : 'Chemistry' 
+    } , 
+    contact : '+11234567890' , 
+    status : 'SCHEDULED' 
+  } ] 
+} )

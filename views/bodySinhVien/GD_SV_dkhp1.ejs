@@ -1,0 +1,184 @@
+
+    <div class="container">
+        <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center;">
+            <h1>Đăng kí học phần</h1>
+        </div>
+        <form class="form-horizontal"  action="/sinhvien/dangkyhp">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+
+            </div>
+            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                <div class="form-group">
+                    <label class="label-control col-xs-4 col-sm-4 col-md-4 col-lg-4 ">Năm học:</label>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <select class="form-control" id="namhochtml" name="namhoc" >
+                            <option value="2021-2022">2021-2022</option>
+                            <option value="2022-2023">2022-2023</option>
+                            <option value="2023-2024">2023-2024</option>
+                            <option value="2024-2025">2024-2025</option>
+                          </select>
+                          <br>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="label-control col-xs-4 col-sm-4 col-md-4 col-lg-4 ">Học kì:</label>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <select class="form-control" id="hockyhtml" name="hocky">
+                            <option value=1>1</option>
+                            <option value=2>2</option>
+                            <option value=3>3</option>
+                            <option value=4>4</option>
+                          </select>
+                          <br>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"></div>
+                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <button type="submit" class="btn btn-info"> Lọc theo thông tin </button>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h4>Danh sách môn học phần</h4>
+                
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Chọn</th>
+                                <th>Mã môn</th>
+                                <th>Tên môn</th>
+                                <th>Tín chỉ</th>
+                                <th>Học phần yêu cầu</th>
+                                <th>Bắt buộc</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%for(let i=0;i< listmh.length;i++){%>
+                                <tr>
+                                    <td>
+                                        <input name="monhp" type="radio" id=<%=listmh[i].MaMHP%> value=<%=listmh[i].MaMHP%> 
+                                        >
+                                    </td>
+                                    <td><%=listmh[i].MaMHP %></td>
+                                    <td><%=listmh[i].TenMHHP %></td>
+                                    <td><%=listmh[i].SoTinChi %></td>
+                                    <td><%=listmh[i].HocPhanYeuCau %></td>
+                                    <td><%=listmh[i].BatBuoc %></td>
+                                </tr>
+                            <%}%>
+            
+                        </tbody>
+                    </table>
+                    <button id="btnLoc2" type="submit" class="btn btn-info">Lấy danh sách lớp</button>
+    
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h4>Danh sách lớp học phần</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Chọn</th>
+                                <th>Mã Lớp</th>
+                                <th>Sĩ số</th>
+                                <th>Số lượng đã đăng kí</th>
+                                <th>Tình trạng</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+    
+                            <%for(let i=0;i< listlh.length;i++){%>
+                                <tr>
+                                    <td><%=listlh[i].MaLopHP%></td>
+                                    <td><%=listlh[i].SiSo%></td>
+                                    <td><%=listlh[i].DaDangKy%></td>
+                                    <td> <% if(listlh[i].DaDangKy > 49){ %>
+                                       chấp nhận mở lớp
+                                        <% } %>
+                                        <% if(listlh[i].DaDangKy <= 49){ %>
+                                            chờ đăng ký
+                                             <% } %>
+                                    </td>
+                                    <td>
+                                        <a href="/sinhvien/dangkyhp/<%=listlh[i].MaLopHP%>"
+                                            class="btn btn-danger">Chọn</a>
+                                            <!-- <button class="btn btn-primary" id="chuyen1" onclick="nda()"></button>
+                                            <button class="btn btn-primary" id="chuyen" onclick='ChonNhom("<%=listlh[i].MaLopHP%>")'>Chọn</button> -->
+                                    </td>
+                                </tr>
+                            <%}%>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <h4>Danh sách các lớp học phần đã đăng kí</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Chọn</th>
+                                <th>Mã Lớp</th>
+                                <th>Tên môn</th>
+                                <th>Nhóm</th>
+                                <th>Giảng viên</th>
+                            </tr>
+                        </thead>
+                     
+                        <tbody>
+                           
+                            <%for(let i=0;i< listmonhocdadangky.length;i++){%>
+                                <tr>
+                                    <td>
+                                        <input name="lhpddk" id=<%=listmonhocdadangky[i].MaLopHP%> type="radio" value=<%=listmonhocdadangky[i].MaLopHP%>>
+                                    </td>
+                                    <td><%=listmonhocdadangky[i].MaLopHP%></td>
+                                    <td><%=listmonhocdadangky[i].TenMHHP%></td>
+                                    <td><%=listmonhocdadangky[i].Nhom%></td>
+                                    <td><%=listmonhocdadangky[i].HoTen%></td>
+                                </tr>
+                            <%}%>
+    
+                        </tbody>
+                    </table>
+                            
+                    <button type="submit" class="btn btn-danger" name="" id="btnhuy" style="display: none;" >Hủy Đăng kí</button>
+                    <button type="button" class="btn btn-danger" name="" onclick="myfun()" value="Click metho">Hủy Đăng kí</button>
+                </div>
+    
+            </form> 
+    </div>
+
+    <script type="text/javascript">
+           
+        function myfun(){
+            var xacnhanhuy = confirm("bạn có chắc muốn hủy?") ;
+            var namhoc = document.getElementById("namhochtml").value;
+            var hocky = document.getElementById("hockyhtml").value;
+            var huy =document.getElementById("btnhuy");
+            
+             if(xacnhanhuy==true)
+             {
+                 huy.click() ;
+                 // location.replace("/sinhvien/dangkyhp?namhoc="+namhoc+"&hocky="+hocky+"&lhpddk="+huy);
+                 //location.replace("/sinhvien/dangkyhp?namhoc="+namhoc+"&hocky="+hocky);
+                
+                 return true;
+             }else
+                 return false; 
+        }
+        function ChonNhom(malop){
+            // console.log(malop);
+            alert("helo");
+            console.log(malop);
+        }
+        function nda(){
+            console.log("helo");
+            alert("helo");
+        }
+        // alert("helo");
+       
+    </script>
