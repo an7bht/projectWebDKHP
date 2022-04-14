@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     // host:'localhost',
     // user:'root',
     // password:'123456',
-    // database:'sqlquanlyhocphan'
+    // database:' '
 
     host:process.env.DATABASE_HOST || 'dt3bgg3gu6nqye5f.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
     user:process.env.DATABASE_USER || 'ma1oem39jp772diw',
@@ -199,7 +199,7 @@ exports.svupdatemk = function(mk,masv,callbackQuery){
 // lấy thông tin cá nhân sinh viên ntnt
 exports.getTTCNSV = function(MSSV,callbackQuery){
     connect();// order by MSSV DESC limit 5
-    connection.query("SELECT * FROM sqlquanlyhocphan.sinhvien where MSSV = ?",[MSSV], function(err, results,fields){
+    connection.query("SELECT * FROM sinhvien where MSSV = ?",[MSSV], function(err, results,fields){
         if(!err){
             callbackQuery(results);
         }else{
@@ -419,7 +419,7 @@ exports.kiemtralichtrungthoigianchosinhvien = function(HocKy, Nam, MSSV,MaLopHP,
 //đăng ký học phần
 exports.dangkyhocphanchosinhvien = function(masv,malophp,nhom,callbackQuery){
     connect();
-    connection.query("INSERT INTO `sqlquanlyhocphan`.`phieudangkylhp` (`MSSV`, `MaLopHP`, `Nhom`) VALUES (?, ?, ?)",
+    connection.query("INSERT INTO `phieudangkylhp` (`MSSV`, `MaLopHP`, `Nhom`) VALUES (?, ?, ?)",
     [masv,malophp,nhom],(err,results)=>{
         if(!err){
             //callbackQuery(results);
@@ -432,7 +432,7 @@ exports.dangkyhocphanchosinhvien = function(masv,malophp,nhom,callbackQuery){
 //hủy đăng ký học phần
 exports.huydangkyhocphanchosinhvien = function(masv,malophp,callbackQuery){
     connect();
-    connection.query("DELETE FROM `sqlquanlyhocphan`.`phieudangkylhp` WHERE (`MSSV` = ?) and (`MaLopHP` = ?) ",
+    connection.query("DELETE FROM `phieudangkylhp` WHERE (`MSSV` = ?) and (`MaLopHP` = ?) ",
     [masv,malophp],(err,results)=>{
         if(!err){
             //callbackQuery(results);
@@ -470,7 +470,7 @@ exports.laylichhocchosinhvien = function(HocKy, Nam, MSSV,callbackQuery){
 //update số lượng sinh viên đăng ký trong 1 lớp
 exports.updatesisosinhviendadangkytrongmotlop = function(siso,malophp,callbackQuery){
     connect();
-    connection.query("UPDATE `sqlquanlyhocphan`.`lophocphan` SET `DaDangKy` = ? WHERE (`MaLopHP` = ?);",[siso,malophp],(err,results)=>{
+    connection.query("UPDATE `lophocphan` SET `DaDangKy` = ? WHERE (`MaLopHP` = ?);",[siso,malophp],(err,results)=>{
         if(!err){
             //callbackQuery(results);
         }else{
@@ -994,7 +994,7 @@ exports.laymhtheocng = function(macng,callbackQuery){
 
 exports.xoamhkhcn = function(mamh,callbackQuery){
     connect();
-    connection.query("DELETE FROM sqlquanlyhocphan.chuongtrinhkhung where  MaMHP = ?",[mamh],
+    connection.query("DELETE FROM chuongtrinhkhung where  MaMHP = ?",[mamh],
     (err,results)=>{
         if(!err){
             callbackQuery(results);
@@ -1829,7 +1829,7 @@ exports.nvnhapdiemlaymalop = function(callbackQuery){
 
 exports.nvnhapdiemlaydssv = function(malop,callbackQuery){
     connect();
-    connection.query("SELECT ph.MSSV,sv.HoTen,ph.MaLopHP,ph.DiemTK,ph.DiemGK,ph.DiemTH,ph.DiemCK FROM sqlquanlyhocphan.phieudangkylhp ph join sqlquanlyhocphan.sinhvien sv on ph.MSSV = sv.MSSV where MaLopHP = ? and Nhom = 'LT'",[malop],(err,results)=>{
+    connection.query("SELECT ph.MSSV,sv.HoTen,ph.MaLopHP,ph.DiemTK,ph.DiemGK,ph.DiemTH,ph.DiemCK FROM phieudangkylhp ph join sinhvien sv on ph.MSSV = sv.MSSV where MaLopHP = ? and Nhom = 'LT'",[malop],(err,results)=>{
         if(!err){
             callbackQuery(results);
         }else{
@@ -1841,7 +1841,7 @@ exports.nvnhapdiemlaydssv = function(malop,callbackQuery){
 
 exports.nvnhapdiemlaysv = function(mssv,malop,callbackQuery){
     connect();
-    connection.query("SELECT * FROM sqlquanlyhocphan.phieudangkylhp where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[mssv,malop],(err,results)=>{
+    connection.query("SELECT * FROM phieudangkylhp where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[mssv,malop],(err,results)=>{
         if(!err){
             callbackQuery(results);
         }else{
@@ -1853,7 +1853,7 @@ exports.nvnhapdiemlaysv = function(mssv,malop,callbackQuery){
 
 exports.nvnhapdiemcapnhatdiem = function(diemtk,diemgk,diemth,diemck,masv,malop,callbackQuery){
     connect();
-    connection.query("update sqlquanlyhocphan.phieudangkylhp set DiemTK = ?, DiemGK = ? , DiemTH = ? , DiemCK = ? where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[diemtk,diemgk,diemth,diemck,masv,malop],(err,results)=>{
+    connection.query("update phieudangkylhp set DiemTK = ?, DiemGK = ? , DiemTH = ? , DiemCK = ? where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[diemtk,diemgk,diemth,diemck,masv,malop],(err,results)=>{
         if(!err){
             callbackQuery(results);
         }else{
@@ -1865,7 +1865,7 @@ exports.nvnhapdiemcapnhatdiem = function(diemtk,diemgk,diemth,diemck,masv,malop,
 
 exports.nvnhapdiemtk = function(diemtk,masv,malop,callbackQuery){
     connect();
-    connection.query("update sqlquanlyhocphan.phieudangkylhp set DiemTK = ? where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[diemtk,malop],(err,results)=>{
+    connection.query("update phieudangkylhp set DiemTK = ? where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[diemtk,malop],(err,results)=>{
         if(!err){
             callbackQuery(results);
         }else{
@@ -1877,7 +1877,7 @@ exports.nvnhapdiemtk = function(diemtk,masv,malop,callbackQuery){
 
 exports.nvnhapdiemgk = function(diemgk,masv,malop,callbackQuery){
     connect();
-    connection.query("update sqlquanlyhocphan.phieudangkylhp set DiemGK = ? where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[diemgk,masv,malop],(err,results)=>{
+    connection.query("update phieudangkylhp set DiemGK = ? where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[diemgk,masv,malop],(err,results)=>{
         if(!err){
             callbackQuery(results);
         }else{
@@ -1889,7 +1889,7 @@ exports.nvnhapdiemgk = function(diemgk,masv,malop,callbackQuery){
 
 exports.nvnhapdiemth = function(diemth,masv,malop,callbackQuery){
     connect();
-    connection.query("update sqlquanlyhocphan.phieudangkylhp set DiemTH = ? where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[diemth,masv,malop],(err,results)=>{
+    connection.query("update phieudangkylhp set DiemTH = ? where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[diemth,masv,malop],(err,results)=>{
         if(!err){
             callbackQuery(results);
         }else{
@@ -1901,7 +1901,7 @@ exports.nvnhapdiemth = function(diemth,masv,malop,callbackQuery){
 
 exports.nvnhapdiemck = function(diemck,masv,malop,callbackQuery){
     connect();
-    connection.query("update sqlquanlyhocphan.phieudangkylhp set DiemCK = ? where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[diemck,masv,malop],(err,results)=>{
+    connection.query("update phieudangkylhp set DiemCK = ? where MSSV = ? and MaLopHP = ? and Nhom = 'LT'",[diemck,masv,malop],(err,results)=>{
         if(!err){
             callbackQuery(results);
         }else{
